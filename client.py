@@ -104,13 +104,13 @@ if __name__ == "__main__":
         else:
             server_url = "http://vindinium.org"
         params = NEAT.Parameters()
-        params.PopulationSize = 100
+        params.PopulationSize = 50
         params.DynamicCompatibility = True
         params.AllowClones = True
         params.CompatTreshold = 5.0
         params.CompatTresholdModifier = 0.3
         params.YoungAgeTreshold = 15
-        params.SpeciesMaxStagnation = 100
+        params.SpeciesMaxStagnation = 25
         params.OldAgeTreshold = 35
         params.MinSpecies = 3
         params.MaxSpecies = 10
@@ -127,11 +127,11 @@ if __name__ == "__main__":
         params.MutateAddLinkProb = 0.05
         params.MutateRemLinkProb = 0.00
 
-        genome = NEAT.Genome(0, 9, 0, 5, False, NEAT.ActivationFunction.TANH,
+        genome = NEAT.Genome(0, 10, 0, 5, False, NEAT.ActivationFunction.TANH,
                              NEAT.ActivationFunction.UNSIGNED_SIGMOID, 0, params)
         best_genome_ever = None
         pop = NEAT.Population(genome, params, True, 1.0)
-        top_score = 100
+        top_score = 200
         top_pop_score = 0
         for generation in range(100):
             genome_list = NEAT.GetGenomeList(pop)

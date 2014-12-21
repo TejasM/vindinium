@@ -50,7 +50,8 @@ class RandomBot(object, Bot):
 
     def move(self, state):
         super(RandomBot, self).move(state)
-        interesting_mines = [locs for locs, owner in self.game.mines_locs.items() if not owner or owner != self.hero.id]
+        interesting_mines = [locs for locs, owner in self.game.mines_locs.items() if owner != self.hero.id]
+        number_of_owned = len(self.game.mines_locs.keys()) - len(interesting_mines)
         enemies = [e for e in self.game.heroes if e and e.id != self.hero.id]
         avoid = set()
         routes = list(self.routeGenerator(avoid))
@@ -69,7 +70,8 @@ class RandomBot(object, Bot):
             routes_e.sort(key=lambda z: len(z))
             routes_enemies.append((e.life, routes_e.pop(0)))
         try:
-            x = np.asarray([self.hero.life, len(route_m), len(route_t), routes_enemies[0][0], len(routes_enemies[0][1]),
+            x = np.asarray([self.hero.life, number_of_owned, len(route_m), len(route_t), routes_enemies[0][0],
+                            len(routes_enemies[0][1]),
                             routes_enemies[1][0], len(routes_enemies[1][1]), routes_enemies[2][0],
                             len(routes_enemies[2][1])], dtype=float)
             self.n.Input(list(scale(x, with_mean=False)))
