@@ -127,7 +127,7 @@ if __name__ == "__main__":
         params.MutateAddLinkProb = 0.05
         params.MutateRemLinkProb = 0.00
 
-        genome = NEAT.Genome(0, 10, 0, 5, False, NEAT.ActivationFunction.TANH,
+        genome = NEAT.Genome(0, 13, 0, 5, False, NEAT.ActivationFunction.TANH,
                              NEAT.ActivationFunction.UNSIGNED_SIGMOID, 0, params)
         best_genome_ever = None
         pop = NEAT.Population(genome, params, True, 1.0)

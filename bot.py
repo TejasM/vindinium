@@ -68,12 +68,13 @@ class RandomBot(object, Bot):
         for e in enemies:
             routes_e = [r for loc, r in routes if loc == e.pos]
             routes_e.sort(key=lambda z: len(z))
-            routes_enemies.append((e.life, routes_e.pop(0)))
+            routes_enemies.append(
+                (e.life, routes_e.pop(0), len([locs for locs, owner in self.game.mines_locs.items() if owner == e.id])))
         try:
             x = np.asarray([self.hero.life, number_of_owned, len(route_m), len(route_t), routes_enemies[0][0],
-                            len(routes_enemies[0][1]),
-                            routes_enemies[1][0], len(routes_enemies[1][1]), routes_enemies[2][0],
-                            len(routes_enemies[2][1])], dtype=float)
+                            len(routes_enemies[0][1]), routes_enemies[0][2],
+                            routes_enemies[1][0], len(routes_enemies[1][1]), routes_enemies[1][2], routes_enemies[2][0],
+                            len(routes_enemies[2][1]), routes_enemies[2][2]], dtype=float)
             self.n.Input(list(scale(x, with_mean=False)))
             self.n.Activate()
             options = list(self.n.Output())
