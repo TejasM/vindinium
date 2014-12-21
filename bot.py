@@ -89,6 +89,8 @@ class RandomBot(object, Bot):
                 return routes_enemies[1][1].pop(0)
             elif index_max == 4:
                 return routes_enemies[2][1].pop(0)
+            else:
+                return 'Stay'
         except Exception as e:
             print e
         return route_m.pop(0)

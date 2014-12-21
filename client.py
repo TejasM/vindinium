@@ -127,11 +127,11 @@ if __name__ == "__main__":
         params.MutateAddLinkProb = 0.05
         params.MutateRemLinkProb = 0.00
 
-        genome = NEAT.Genome(0, 13, 0, 5, False, NEAT.ActivationFunction.TANH,
+        genome = NEAT.Genome(0, 13, 0, 6, False, NEAT.ActivationFunction.TANH,
                              NEAT.ActivationFunction.UNSIGNED_SIGMOID, 0, params)
         best_genome_ever = None
         pop = NEAT.Population(genome, params, True, 1.0)
-        top_score = 200
+        top_score = 500
         top_pop_score = 0
         for generation in range(100):
             genome_list = NEAT.GetGenomeList(pop)
