@@ -1,12 +1,9 @@
-import pickle
-from random import choice
-from pybrain import SoftmaxLayer
-from pybrain.optimization import GA
-from pybrain.tools.shortcuts import buildNetwork
-from sklearn.preprocessing import scale
-from game import Game
 from collections import defaultdict
 import numpy as np
+
+from sklearn.preprocessing import scale
+
+from game import Game
 
 
 class Bot:
