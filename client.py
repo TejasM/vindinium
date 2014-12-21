@@ -138,7 +138,6 @@ if __name__ == "__main__":
             for i, genome in enumerate(genome_list):
                 net = NEAT.NeuralNetwork()
                 genome.BuildPhenotype(net)
-
                 score = start(server_url, key, mode, number_of_turns, RandomBot(net))
                 genome.SetFitness(score / top_score)
                 print score
@@ -153,5 +152,5 @@ if __name__ == "__main__":
             net = NEAT.NeuralNetwork()
             best_genome_ever = pop.Species[0].GetLeader()
             best_genome_ever.BuildPhenotype(net)
-            pickle.dump((best_genome_ever, net), open('best-' + str(generation), 'w'))
+            net.Save('bot-' + str(generation))
             pop.Epoch()
