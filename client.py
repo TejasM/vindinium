@@ -153,5 +153,5 @@ if __name__ == "__main__":
             net = NEAT.NeuralNetwork()
             best_genome_ever = pop.Species[0].GetLeader()
             best_genome_ever.BuildPhenotype(net)
-            pickle.dump((best_genome_ever, net), 'best-' + str(generation))
+            pickle.dump((best_genome_ever, net), open('best-' + str(generation)))
             pop.Epoch()
