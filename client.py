@@ -66,7 +66,7 @@ def start(server_url, key, mode, turns, bot):
     # Get the initial state
     state = get_new_game_state(session, server_url, key, mode, turns)
     print("Playing at: " + state['viewUrl'])
-
+    actual_fit = 0
     while not is_finished(state):
         # Some nice output ;)
         sys.stdout.write('.')
@@ -74,14 +74,16 @@ def start(server_url, key, mode, turns, bot):
 
         # Choose a move
         direction = bot.move(state)
-
+        actual_fit += 3 * bot.number_of_owned
+        actual_fit += bot.e_owned
         # Send the move and receive the updated game state
         url = state['playUrl']
         state = move(session, url, direction)
 
     # Clean up the session
     session.close()
-    return bot.hero.gold
+    actual_fit += 5 * bot.hero.gold
+    return actual_fit
 
 
 if __name__ == "__main__":
@@ -131,7 +133,6 @@ if __name__ == "__main__":
                              NEAT.ActivationFunction.UNSIGNED_SIGMOID, 0, params)
         best_genome_ever = None
         pop = NEAT.Population(genome, params, True, 1.0)
-        top_score = 500
         top_pop_score = 0
         for generation in range(100):
             genome_list = NEAT.GetGenomeList(pop)
@@ -139,11 +140,8 @@ if __name__ == "__main__":
                 net = NEAT.NeuralNetwork()
                 genome.BuildPhenotype(net)
                 score = start(server_url, key, mode, number_of_turns, RandomBot(net))
-                genome.SetFitness(score / top_score)
-                print score
-                if top_pop_score < score / top_score:
-                    top_pop_score = score / top_score
-                print("\nGame finished: %d/%d" % (i + 1, len(genome_list)))
+                genome.SetFitness(score)
+                print("\nGame finished: %d/%d, Score %d" % (i + 1, len(genome_list), score))
 
             best = max([x.GetLeader().GetFitness() for x in pop.Species])
             print 'Best fitness:', best, 'Species:', len(pop.Species)

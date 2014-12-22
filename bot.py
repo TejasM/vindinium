@@ -47,11 +47,14 @@ class RandomBot(object, Bot):
     def __init__(self, net):
         super(RandomBot, self).__init__()
         self.n = net
+        self.number_of_owned = 0
+        self.e_owned = 0
 
     def move(self, state):
         super(RandomBot, self).move(state)
+        self.e_owned = 0
         interesting_mines = [locs for locs, owner in self.game.mines_locs.items() if owner != self.hero.id]
-        number_of_owned = len(self.game.mines_locs.keys()) - len(interesting_mines)
+        self.number_of_owned = len(self.game.mines_locs.keys()) - len(interesting_mines)
         enemies = [e for e in self.game.heroes if e and e.id != self.hero.id]
         avoid = set()
         routes = list(self.routeGenerator(avoid))
@@ -68,10 +71,13 @@ class RandomBot(object, Bot):
         for e in enemies:
             routes_e = [r for loc, r in routes if loc == e.pos]
             routes_e.sort(key=lambda z: len(z))
+            e_owned = len([locs for locs, owner in self.game.mines_locs.items() if owner == e.id])
+            self.e_owned += e_owned
             routes_enemies.append(
-                (e.life, routes_e.pop(0), len([locs for locs, owner in self.game.mines_locs.items() if owner == e.id])))
+                (e.life, routes_e.pop(0), e_owned))
+        self.e_owned = len(self.game.mines_locs.items()) - self.e_owned
         try:
-            x = np.asarray([self.hero.life, number_of_owned, len(route_m), len(route_t), routes_enemies[0][0],
+            x = np.asarray([self.hero.life, self.number_of_owned, len(route_m), len(route_t), routes_enemies[0][0],
                             len(routes_enemies[0][1]), routes_enemies[0][2],
                             routes_enemies[1][0], len(routes_enemies[1][1]), routes_enemies[1][2], routes_enemies[2][0],
                             len(routes_enemies[2][1]), routes_enemies[2][2]], dtype=float)
